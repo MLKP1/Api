@@ -27,6 +27,7 @@ import { getDailyReceiptInPeriod } from './routes/get-daily-receipt-in-period'
 import { getPopularProducts } from './routes/get-popular-products'
 import { dispatchOrder } from './routes/dispatch-order'
 import { deliverOrder } from './routes/deliver-order'
+import { getHealthy } from './routes/get-healthy'
 
 const app = new Elysia()
   .use(swagger())
@@ -46,6 +47,7 @@ const app = new Elysia()
       },
     }),
   )
+  .use(getHealthy)
   .use(authentication)
   .use(signOut)
   .use(getProfile)
