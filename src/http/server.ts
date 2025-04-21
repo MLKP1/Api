@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
+import { swagger } from '@elysiajs/swagger'
 
 import { registerRestaurant } from './routes/register-restaurant'
 import { registerCustomer } from './routes/register-customer'
@@ -28,6 +29,7 @@ import { dispatchOrder } from './routes/dispatch-order'
 import { deliverOrder } from './routes/deliver-order'
 
 const app = new Elysia()
+  .use(swagger())
   .use(
     cors({
       credentials: true,
