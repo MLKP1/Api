@@ -3,6 +3,7 @@ import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 
 import { registerRestaurant } from './routes/register-restaurant'
+import { registerManager } from './routes/register-manager'
 import { registerCustomer } from './routes/register-customer'
 import { sendAuthenticationLink } from './routes/send-authentication-link'
 import { createOrder } from './routes/create-order'
@@ -53,6 +54,7 @@ const app = new Elysia()
   .use(getProfile)
   .use(getManagedRestaurant)
   .use(registerRestaurant)
+  .use(registerManager)
   .use(registerCustomer)
   .use(sendAuthenticationLink)
   .use(authenticateFromLink)
