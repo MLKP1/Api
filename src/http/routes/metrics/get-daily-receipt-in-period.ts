@@ -1,5 +1,5 @@
 import Elysia, { t } from 'elysia'
-import { authentication } from '../authentication'
+import { authentication } from '../../authentication'
 import { and, count, eq, gte, lte, sql, sum } from 'drizzle-orm'
 import dayjs from 'dayjs'
 import { db } from '@/db/connection'

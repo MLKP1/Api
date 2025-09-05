@@ -1,13 +1,13 @@
 import Elysia from 'elysia'
-import { authentication } from '../authentication'
-import { and, eq, gte, sql, sum } from 'drizzle-orm'
+import { authentication } from '../../authentication'
+import { and, count, eq, gte, sql } from 'drizzle-orm'
 import dayjs from 'dayjs'
 import { db } from '@/db/connection'
 import { orders } from '@/db/schema'
 
-export const getMonthReceipt = new Elysia()
+export const getMonthOrdersAmount = new Elysia()
   .use(authentication)
-  .get('/metrics/month-receipt', async ({ getManagedRestaurantId }) => {
+  .get('/metrics/month-orders-amount', async ({ getManagedRestaurantId }) => {
     const restaurantId = await getManagedRestaurantId()
 
     const today = dayjs()
@@ -20,10 +20,10 @@ export const getMonthReceipt = new Elysia()
     const lastMonthWithYear = lastMonth.format('YYYY-MM')
     const currentMonthWithYear = today.format('YYYY-MM')
 
-    const monthsReceipts = await db
+    const ordersPerMonth = await db
       .select({
         monthWithYear: sql<string>`TO_CHAR(${orders.createdAt}, 'YYYY-MM')`,
-        receipt: sum(orders.totalInCents).mapWith(Number),
+        amount: count(orders.id),
       })
       .from(orders)
       .where(
@@ -33,23 +33,23 @@ export const getMonthReceipt = new Elysia()
         ),
       )
       .groupBy(sql`TO_CHAR(${orders.createdAt}, 'YYYY-MM')`)
-      .having(({ receipt }) => gte(receipt, 1))
+      .having(({ amount }) => gte(amount, 1))
 
-    const currentMonthReceipt = monthsReceipts.find((monthReceipt) => {
-      return monthReceipt.monthWithYear === currentMonthWithYear
+    const currentMonthOrdersAmount = ordersPerMonth.find((ordersInMonth) => {
+      return ordersInMonth.monthWithYear === currentMonthWithYear
     })
 
-    const lastMonthReceipt = monthsReceipts.find((monthReceipt) => {
-      return monthReceipt.monthWithYear === lastMonthWithYear
+    const lastMonthOrdersAmount = ordersPerMonth.find((ordersInMonth) => {
+      return ordersInMonth.monthWithYear === lastMonthWithYear
     })
 
     const diffFromLastMonth =
-      lastMonthReceipt && currentMonthReceipt
-        ? (currentMonthReceipt.receipt * 100) / lastMonthReceipt.receipt
+      lastMonthOrdersAmount && currentMonthOrdersAmount
+        ? (currentMonthOrdersAmount.amount * 100) / lastMonthOrdersAmount.amount
         : null
 
     return {
-      receipt: currentMonthReceipt?.receipt ?? 0,
+      amount: currentMonthOrdersAmount?.amount ?? 0,
       diffFromLastMonth: diffFromLastMonth
         ? Number((diffFromLastMonth - 100).toFixed(2))
         : 0,

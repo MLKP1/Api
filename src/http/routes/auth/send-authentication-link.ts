@@ -5,7 +5,7 @@ import { createId } from '@paralleldrive/cuid2'
 // import { resend } from '@/mail/client'
 // import { AuthenticationMagicLinkTemplate } from '@/mail/templates/authentication-magic-link'
 import { env } from '@/env'
-import { UnauthorizedError } from './errors/unauthorized-error'
+import { UnauthorizedError } from '../errors/unauthorized-error'
 
 export const sendAuthenticationLink = new Elysia().post(
   '/authenticate',

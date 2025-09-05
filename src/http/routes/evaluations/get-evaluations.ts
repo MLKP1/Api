@@ -1,7 +1,7 @@
 import { db } from '@/db/connection'
 import Elysia, { t } from 'elysia'
 import { z } from 'zod'
-import { authentication } from '../authentication'
+import { authentication } from '../../authentication'
 
 export const getEvaluations = new Elysia().use(authentication).get(
   '/evaluations',

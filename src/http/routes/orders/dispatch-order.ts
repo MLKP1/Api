@@ -1,12 +1,12 @@
 import Elysia, { t } from 'elysia'
-import { authentication } from '../authentication'
+import { authentication } from '../../authentication'
 import { db } from '@/db/connection'
 import { orders } from '@/db/schema'
 import { eq } from 'drizzle-orm'
-import { UnauthorizedError } from './errors/unauthorized-error'
+import { UnauthorizedError } from '../errors/unauthorized-error'
 
-export const approveOrder = new Elysia().use(authentication).patch(
-  '/orders/:id/approve',
+export const dispatchOrder = new Elysia().use(authentication).patch(
+  '/orders/:id/dispatch',
   async ({ getManagedRestaurantId, set, params }) => {
     const { id: orderId } = params
     const restaurantId = await getManagedRestaurantId()
@@ -24,16 +24,16 @@ export const approveOrder = new Elysia().use(authentication).patch(
       throw new UnauthorizedError()
     }
 
-    if (order.status !== 'pending') {
+    if (order.status !== 'processing') {
       set.status = 400
 
-      return { message: 'Order was already approved before.' }
+      return { message: 'O pedido já foi enviado ao cliente.' }
     }
 
     await db
       .update(orders)
       .set({
-        status: 'processing',
+        status: 'delivering',
       })
       .where(eq(orders.id, orderId))
 

@@ -1,5 +1,5 @@
 import Elysia, { t } from 'elysia'
-import { authentication } from '../authentication'
+import { authentication } from '../../authentication'
 import { db } from '@/db/connection'
 import { evaluations } from '@/db/schema'
 

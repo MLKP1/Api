@@ -1,5 +1,5 @@
 import Elysia from 'elysia'
-import { authentication } from '../authentication'
+import { authentication } from '../../authentication'
 import { and, count, eq } from 'drizzle-orm'
 import { db } from '@/db/connection'
 import { orderItems, orders, products } from '@/db/schema'
