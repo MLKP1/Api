@@ -3,6 +3,7 @@ import {
   evaluations,
   orderItems,
   orders,
+  pizzas,
   products,
   restaurants,
   users,
@@ -13,6 +14,7 @@ import chalk from 'chalk'
 await db.delete(orderItems)
 await db.delete(orders)
 await db.delete(evaluations)
+await db.delete(pizzas)
 await db.delete(products)
 await db.delete(restaurants)
 await db.delete(authLinks)
