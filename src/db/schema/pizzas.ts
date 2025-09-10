@@ -1,19 +1,23 @@
 import { createId } from '@paralleldrive/cuid2'
 import { relations } from 'drizzle-orm'
-import { pgTable, text, boolean, integer, pgEnum, timestamp } from 'drizzle-orm/pg-core'
+import {
+  pgTable,
+  text,
+  boolean,
+  integer,
+  pgEnum,
+  timestamp,
+} from 'drizzle-orm/pg-core'
 import { restaurants } from './restaurants'
 import { orderItems } from './order-items'
 
 export const pizzaSizesEnum = pgEnum('pizza_sizes', [
   'MEDIUM',
   'LARGE',
-  'FAMILY'
+  'FAMILY',
 ])
 
-export const pizzaTypesEnum = pgEnum('pizza_types', [
-  'SWEET',
-  'SALTY'
-])
+export const pizzaTypesEnum = pgEnum('pizza_types', ['SWEET', 'SALTY'])
 
 export const pizzas = pgTable('pizzas', {
   id: text('id')
@@ -35,7 +39,7 @@ export const pizzas = pgTable('pizzas', {
     .references(() => restaurants.id, {
       onDelete: 'cascade',
     })
-    .notNull()
+    .notNull(),
 })
 
 export const pizzasRelations = relations(pizzas, ({ one, many }) => ({
