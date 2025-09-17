@@ -7,7 +7,7 @@ import { sendAuthenticationLink, authenticateFromLink, signOut } from './routes/
 import { registerRestaurant, getManagedRestaurant } from './routes/restaurants'
 import { createEvaluation, getEvaluations } from './routes/evaluations'
 import { registerCustomer, getProfile, updateProfile } from './routes/customers'
-import { createPizza, listAllPizzas } from './routes/products/pizzas'
+import { createPizza, listAllPizzas, activePizza, disablePizza } from './routes/products/pizzas'
 
 import { updateMenu } from './routes/update-menu'
 import { authentication } from './authentication'
@@ -56,6 +56,8 @@ const app = new Elysia()
   .use(getPopularProducts)
   .use(createPizza)
   .use(listAllPizzas)
+  .use(activePizza)
+  .use(disablePizza)
   .onError(({ code, error, set }) => {
     switch (code) {
       case 'VALIDATION': {
