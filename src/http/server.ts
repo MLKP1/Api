@@ -7,7 +7,7 @@ import { sendAuthenticationLink, authenticateFromLink, signOut } from './routes/
 import { registerRestaurant, getManagedRestaurant } from './routes/restaurants'
 import { createEvaluation, getEvaluations } from './routes/evaluations'
 import { registerCustomer, getProfile, updateProfile } from './routes/customers'
-import { createPizza, listAllPizzas, activePizza, disablePizza, removePizza } from './routes/products/pizzas'
+import { createPizza, listAllPizzas, activePizza, disablePizza, editPizza, removePizza } from './routes/products/pizzas'
 
 import { updateMenu } from './routes/update-menu'
 import { authentication } from './authentication'
@@ -52,6 +52,7 @@ const pizzaGroup = new Elysia()
   .use(listAllPizzas)
   .use(activePizza)
   .use(disablePizza)
+  .use(editPizza)
   .use(removePizza)
 
 const app = new Elysia()
