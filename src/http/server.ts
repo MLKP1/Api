@@ -1,6 +1,5 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
-import { staticPlugin } from '@elysiajs/static'
 
 import { getMonthReceipt, getMonthOrdersAmount, getDayOrdersAmount, getMonthCanceledOrdersAmount, getDailyReceiptInPeriod, getPopularProducts } from './routes/metrics'
 import { createOrder, approveOrder, cancelOrder, dispatchOrder, deliverOrder, getOrders, getOrderDetails } from './routes/orders'
@@ -73,11 +72,6 @@ const app = new Elysia()
       },
     }),
   )
-  .use(staticPlugin({
-    alwaysStatic: true,
-    prefix: '/images',
-    assets: 'uploads'
-  }))
   .use(authentication)
   .use(updateMenu)
   .use(authGroup)
