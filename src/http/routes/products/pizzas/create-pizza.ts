@@ -3,6 +3,8 @@ import { pizzas } from '@/db/schema'
 import { authentication } from '@/http/authentication'
 import Elysia, { t } from 'elysia'
 import { createId } from '@paralleldrive/cuid2'
+import { saveImageToS3 } from '@/config/aws-s3'
+import { env } from '@/env'
 
 export const createPizza = new Elysia().use(authentication).post(
   '/products/pizzas',
@@ -35,12 +37,11 @@ export const createPizza = new Elysia().use(authentication).post(
     let imagePath = null
     if (image) {
       const fileName = `${name.toLowerCase().replace(/\s+/g, '-')}-${id}`
-      const fileType = image.type.split('/')[1]
+      const arrayBuffer = await image.arrayBuffer()
 
-      const filePath = `uploads/${fileName}.${fileType}`
-      await Bun.write(filePath, image)
+      await saveImageToS3({ fileName, arrayBuffer, imgType: image.type })
 
-      imagePath = `images/${fileName}.${fileType}`
+      imagePath = `${env.AWS_ENDPOINT}/${fileName}`
     }
 
     await db.insert(pizzas).values({
