@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { env } from '@/env'
 
 const s3 = new S3Client({
@@ -25,6 +25,21 @@ export async function saveImageToS3({
     Key: fileName,
     Body: Buffer.from(arrayBuffer),
     ContentType: imgType,
+  })
+
+  await s3.send(params)
+}
+
+interface deleteImageToS3Props {
+  imageKey: string
+}
+
+export async function deleteImageToS3({
+  imageKey
+}: deleteImageToS3Props) {
+  const params = new DeleteObjectCommand({
+    Bucket: env.AWS_BUCKET_NAME,
+    Key: imageKey
   })
 
   await s3.send(params)
