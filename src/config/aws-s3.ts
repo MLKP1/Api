@@ -30,6 +30,27 @@ export async function saveImageToS3({
   await s3.send(params)
 }
 
+interface updateImageToS3Props {
+  imageKey: string
+  arrayBuffer: ArrayBuffer
+  imgType: string
+}
+
+export async function updateImageToS3({
+  imageKey,
+  arrayBuffer,
+  imgType,
+}: updateImageToS3Props) {
+  const params = new PutObjectCommand({
+    Bucket: env.AWS_BUCKET_NAME,
+    Key: imageKey,
+    Body: Buffer.from(arrayBuffer),
+    ContentType: imgType
+  })
+
+  await s3.send(params)
+}
+
 interface deleteImageToS3Props {
   imageKey: string
 }
