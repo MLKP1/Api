@@ -3,13 +3,49 @@ import { pizzas } from '@/db/schema'
 import { authentication } from '@/http/authentication'
 import { eq } from 'drizzle-orm'
 import Elysia, { t } from 'elysia'
+import { env } from '@/env'
+import { updateImageToS3 } from '@/config/aws-s3'
 
-export const editPizza = new Elysia().use(authentication).put(
+interface EditPizzaRequest {
+  name: string
+  description?: string
+  price: string
+  image?: File
+  size: 'MEDIUM' | 'LARGE' | 'FAMILY'
+  type: 'SWEET' | 'SALTY'
+  slug?: string
+  active?: string
+}
+
+export const editPizza = new Elysia().use(authentication).patch(
   '/products/pizza/:id',
   async ({ body, getCurrentUser, set, params}) => {
     const { restaurantId } = await getCurrentUser()
     const { id } = params
-    const { name, description, price, image, size, type, slug, active } = body
+    const { name, description, image, size, type, slug } = body as EditPizzaRequest
+
+    if ((body as EditPizzaRequest).price === undefined || (body as EditPizzaRequest).price === '') {
+      set.status = 400
+      throw new Error('Price is required.')
+    }
+
+    const price = Number.parseFloat((body as EditPizzaRequest).price)
+    const active = (body as EditPizzaRequest).active === 'false' ? false : true
+
+    if (!name) {
+      set.status = 400
+      throw new Error('Name is required.')
+    }
+
+    if (!size) {
+      set.status = 400
+      throw new Error('Size is required.')
+    }
+
+    if (!type) {
+      set.status = 400
+      throw new Error('Type is required.')
+    }
 
     if (!restaurantId) {
       set.status = 401
@@ -39,12 +75,25 @@ export const editPizza = new Elysia().use(authentication).put(
       throw new Error('Pizza with this slug already exists.')
     }
 
+    if (image) {
+      const imageKey = `${doesExistPizza.name.toLowerCase().replace(/\s+/g, '-')}-${doesExistPizza.id}`
+      const imagePath = `${env.AWS_ENDPOINT}/${imageKey}`
+
+      try {
+        const arrayBuffer = await image.arrayBuffer()
+        await updateImageToS3({ imageKey, arrayBuffer, imgType: image.type })
+      } catch (err) {
+        throw new Error(`Erro ao tentar atualizar imagem, ${err}`)
+      }
+
+      await db.update(pizzas).set({image: imagePath}).where(eq(pizzas.id, id))
+    }
+
     await db.update(pizzas)
       .set({
         name,
         description,
         price,
-        image,
         size,
         type,
         slug,
@@ -54,20 +103,5 @@ export const editPizza = new Elysia().use(authentication).put(
       .where(eq(pizzas.id, id))
 
     set.status = 204
-  },
-  {
-    body: t.Object({
-      name: t.String({ minLength: 5 }),
-      description: t.Optional(t.String()),
-      price: t.Integer({ minimum: 100 }),
-      image: t.Optional(t.String()),
-      size: t.Enum({ MEDIUM: 'MEDIUM', LARGE: 'LARGE', FAMILY: 'FAMILY' }),
-      type: t.Enum({ SWEET: 'SWEET', SALTY: 'SALTY' }),
-      slug: t.Optional(t.String()),
-      active: t.Boolean(),
-    }),
-    params: t.Object({
-      id: t.String(),
-    }),
   }
 )
