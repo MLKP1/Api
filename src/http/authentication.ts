@@ -34,24 +34,26 @@ export const authentication = new Elysia()
   )
   .use(cookie())
   .derive(({ jwt, cookie, setCookie, removeCookie }) => {
-    if (cookie) {
-      console.info(`Cookie found: ${JSON.stringify(cookie)}`)
-    } else {
-      console.error('No cookie found')
-    }
-
-    if (jwt) {
-      console.info(`JWT found: ${JSON.stringify(jwt)}`)
-    } else {
-      console.error('No JWT found')
-    }
-
     return {
       getCurrentUser: async () => {
+        console.group()
+        if (cookie.auth) {
+          console.info(`Cookie found: ${JSON.stringify(cookie.auth)}`)
+        } else {
+          console.error('No cookie found')
+        }
+
         const payload = await jwt.verify(cookie.auth)
 
+        if (payload) {
+          console.info(`Payload found: ${JSON.stringify(payload)}\n\n`)
+        } else {
+          console.error('No payload found')
+        }
+        console.groupEnd()
+
         if (!payload) {
-          console.log(`${JSON.stringify(cookie)} --- ${JSON.stringify(payload)}`)
+          // console.log(`${JSON.stringify(cookie)} --- ${JSON.stringify(payload)}`)
           throw new UnauthorizedError()
         }
 
