@@ -34,6 +34,18 @@ export const authentication = new Elysia()
   )
   .use(cookie())
   .derive(({ jwt, cookie, setCookie, removeCookie }) => {
+    if (cookie) {
+      console.info(`Cookie found: ${JSON.stringify(cookie)}`)
+    } else {
+      console.error('No cookie found')
+    }
+
+    if (jwt) {
+      console.info(`JWT found: ${JSON.stringify(jwt)}`)
+    } else {
+      console.error('No JWT found')
+    }
+
     return {
       getCurrentUser: async () => {
         const payload = await jwt.verify(cookie.auth)
