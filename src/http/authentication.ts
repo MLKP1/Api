@@ -39,6 +39,7 @@ export const authentication = new Elysia()
         const payload = await jwt.verify(cookie.auth)
 
         if (!payload) {
+          console.log(`${JSON.stringify(cookie)} --- ${JSON.stringify(payload)}`)
           throw new UnauthorizedError()
         }
 
