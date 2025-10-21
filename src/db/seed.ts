@@ -92,6 +92,15 @@ function getRandomPizzaPrice({ size, type }: { size: 'MEDIUM' | 'LARGE' | 'FAMIL
   }
 }
 
+function getRandomPizzaImage() {
+  const imageKey = 'pexels-pizza-default-'
+  const numberIndex = faker.number.int({ min: 1, max: 6 })
+  const imageSelected = imageKey + numberIndex
+  const imagePath = `https://tcc-api-4279.s3.sa-east-1.amazonaws.com/pizzas/${imageSelected}`
+
+  return imagePath
+}
+
 /**
  * Create pizzas
 */
@@ -101,6 +110,7 @@ await db.insert(pizzas)
       name: 'Margherita',
       description: 'Molho de tomate, mussarela e manjericão fresco.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -111,6 +121,7 @@ await db.insert(pizzas)
       name: 'Pepperoni',
       description: 'Molho de tomate, mussarela e pepperoni.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'LARGE',
       type: 'SALTY',
@@ -122,6 +133,7 @@ await db.insert(pizzas)
       description:
         'Molho de tomate, mussarela, gorgonzola, parmesão e catupiry.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: false,
       size: 'LARGE',
       type: 'SALTY',
@@ -132,6 +144,7 @@ await db.insert(pizzas)
       name: 'Calabresa',
       description: 'Molho de tomate, mussarela e calabresa fatiada.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: false,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -142,6 +155,7 @@ await db.insert(pizzas)
       name: 'Chocolate com Morango',
       description: 'Chocolate ao leite, morangos frescos e leite condensado.',
       price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'FAMILY',
       type: 'SWEET',
@@ -152,6 +166,7 @@ await db.insert(pizzas)
       name: 'Banana com Canela',
       description: 'Banana fatiada, canela e açúcar.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
@@ -162,6 +177,7 @@ await db.insert(pizzas)
       name: 'Frango com Catupiry',
       description: 'Molho de tomate, frango desfiado, catupiry e milho.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -172,6 +188,7 @@ await db.insert(pizzas)
       name: 'Portuguesa',
       description: 'Molho de tomate, mussarela, presunto, ovo, cebola e azeitonas.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'LARGE',
       type: 'SALTY',
@@ -182,6 +199,7 @@ await db.insert(pizzas)
       name: 'Veggie',
       description: 'Molho de tomate, abobrinha, berinjela, pimentão e champignon.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -192,6 +210,7 @@ await db.insert(pizzas)
       name: 'Bacon Supreme',
       description: 'Molho de tomate, mussarela, bacon crocante e cebola caramelizada.',
       price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'FAMILY',
       type: 'SALTY',
@@ -202,6 +221,7 @@ await db.insert(pizzas)
       name: 'Mexicana',
       description: 'Molho de tomate, carne moída temperada, pimenta jalapeño e nachos.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'LARGE',
       type: 'SALTY',
@@ -212,6 +232,7 @@ await db.insert(pizzas)
       name: 'Atum',
       description: 'Molho de tomate, atum, cebola roxa e azeitonas.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: false,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -222,6 +243,7 @@ await db.insert(pizzas)
       name: 'Rúcula com Tomate Seco',
       description: 'Molho de tomate, mussarela, rúcula fresca e tomate seco.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'LARGE',
       type: 'SALTY',
@@ -232,6 +254,7 @@ await db.insert(pizzas)
       name: 'Nutella com Morango',
       description: 'Nutella, morangos frescos e chocolate granulado.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
@@ -242,6 +265,7 @@ await db.insert(pizzas)
       name: 'Romeu e Julieta',
       description: 'Goiabada cremosa e queijo minas.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
@@ -252,6 +276,7 @@ await db.insert(pizzas)
       name: 'Camarão',
       description: 'Molho de tomate, mussarela, camarão e cream cheese.',
       price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'LARGE',
       type: 'SALTY',
@@ -262,6 +287,7 @@ await db.insert(pizzas)
       name: 'Brigadeiro',
       description: 'Chocolate cremoso e granulado.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
@@ -272,6 +298,7 @@ await db.insert(pizzas)
       name: 'Parma',
       description: 'Molho de tomate, mussarela, presunto de parma e rúcula.',
       price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'FAMILY',
       type: 'SALTY',
@@ -282,6 +309,7 @@ await db.insert(pizzas)
       name: 'Alho e Óleo',
       description: 'Molho de tomate, mussarela, alho frito e azeite de oliva.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
+      image: getRandomPizzaImage(),
       active: false,
       size: 'MEDIUM',
       type: 'SALTY',
@@ -292,6 +320,7 @@ await db.insert(pizzas)
       name: 'Doce de Leite',
       description: 'Doce de leite cremoso, banana e canela.',
       price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
+      image: getRandomPizzaImage(),
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
