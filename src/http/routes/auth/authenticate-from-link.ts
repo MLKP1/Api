@@ -38,6 +38,8 @@ export const authenticateFromLink = new Elysia().use(authentication).get(
 
     await db.delete(authLinks).where(eq(authLinks.code, code))
 
+    console.log(`${managedRestaurant} authenticated`)
+
     set.redirect = redirect
   },
   {
