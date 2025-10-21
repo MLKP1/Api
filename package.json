@@ -15,7 +15,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.896.0",
     "@elysiajs/cookie": "^0.8.0",
-    "@elysiajs/cors": "^0.8.0",
+    "@elysiajs/cors": "^1.4.0",
     "@elysiajs/jwt": "^0.8.0",
     "@paralleldrive/cuid2": "2.2.2",
     "@react-email/components": "^0.0.11",
