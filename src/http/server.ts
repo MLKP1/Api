@@ -8,6 +8,7 @@ import { registerRestaurant, getManagedRestaurant } from './routes/restaurants'
 import { createEvaluation, getEvaluations } from './routes/evaluations'
 import { registerCustomer, getProfile, updateProfile } from './routes/customers'
 import { createPizza, listAllPizzas, activePizza, disablePizza, editPizza, removePizza } from './routes/products/pizzas'
+import { listAllDrinks } from './routes/products/drinks'
 
 import { updateMenu } from './routes/update-menu'
 import { authentication } from './authentication'
@@ -55,6 +56,9 @@ const pizzaGroup = new Elysia()
   .use(editPizza)
   .use(removePizza)
 
+const drinkGroup = new Elysia()
+  .use(listAllDrinks)
+
 const app = new Elysia()
   .use(
     cors({
@@ -81,6 +85,7 @@ const app = new Elysia()
   .use(evaluationGroup)
   .use(metricGroup)
   .use(pizzaGroup)
+  .use(drinkGroup)
   .onError(({ code, error, set }) => {
     switch (code) {
       case 'VALIDATION': {
