@@ -2,6 +2,8 @@
 
 import {
   authLinks,
+  drinks,
+  drinkTypesEnum,
   evaluations,
   orders,
   pizzas,
@@ -14,6 +16,7 @@ import { db } from './connection'
 import chalk from 'chalk'
 import { orderItems } from './schema/order-items'
 import { createId } from '@paralleldrive/cuid2'
+import { env } from '@/env'
 
 /**
  * Reset database
@@ -76,6 +79,140 @@ const [restaurant] = await db
   .returning()
 
 console.log(chalk.yellow('✔ Created restaurant'))
+
+type DrinkType = typeof drinkTypesEnum.enumValues[number]
+
+function getRandomDrinkPrice({ type, volume }: { type: DrinkType, volume: number }) {
+  let basePrice = 0
+
+  switch (type) {
+    case 'SODA':
+      basePrice = 3000
+      break
+    case 'JUICE':
+      basePrice = 4000
+      break
+    case 'ALCOHOLIC':
+      basePrice = 8000
+      break
+    case 'WATER':
+      basePrice = 2000
+      break
+  }
+
+  if (volume > 500) {
+    basePrice += 2000
+  } else if (volume > 300) {
+    basePrice += 1000
+  }
+
+  return basePrice
+}
+
+await db.insert(drinks)
+  .values([
+    {
+      name: 'Coca-Cola',
+      description: 'Refrigerante clássico de cola.',
+      price: getRandomDrinkPrice({ type: 'SODA', volume: 350 }),
+      image: `${env.AWS_ENDPOINT}/drinks/coca-cola`,
+      active: true,
+      volume: 350,
+      type: 'SODA',
+      slug: 'coca-cola-2l',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Suco de Laranja 500ml',
+      description: 'Suco natural de laranja.',
+      price: getRandomDrinkPrice({ type: 'JUICE', volume: 500 }),
+      image: `${env.AWS_ENDPOINT}/drinks/suco-laranja`,
+      active: true,
+      volume: 500,
+      type: 'JUICE',
+      slug: 'suco-de-laranja-500ml',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Cerveja Artesanal 600ml',
+      description: 'Cerveja artesanal premium.',
+      price: getRandomDrinkPrice({ type: 'ALCOHOLIC', volume: 600 }),
+      image: `${env.AWS_ENDPOINT}/drinks/cerveja-artesanal`,
+      active: true,
+      volume: 600,
+      type: 'ALCOHOLIC',
+      slug: 'cerveja-artesanal-600ml',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Água Mineral 330ml',
+      description: 'Água mineral sem gás.',
+      price: getRandomDrinkPrice({ type: 'WATER', volume: 330 }),
+      image: `${env.AWS_ENDPOINT}/drinks/agua-mineral`,
+      active: true,
+      volume: 330,
+      type: 'WATER',
+      slug: 'agua-mineral-330ml',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Refrigerante Guaraná 1L',
+      description: 'Refrigerante sabor guaraná.',
+      price: getRandomDrinkPrice({ type: 'SODA', volume: 1000 }),
+      image: `${env.AWS_ENDPOINT}/drinks/guarana-1l`,
+      active: true,
+      volume: 1000,
+      type: 'SODA',
+      slug: 'refrigerante-guarana-1l',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Suco de Uva Integral 1L',
+      description: 'Suco integral de uva.',
+      price: getRandomDrinkPrice({ type: 'JUICE', volume: 1000 }),
+      image: `${env.AWS_ENDPOINT}/drinks/suco-uva`,
+      active: true,
+      volume: 1000,
+      type: 'JUICE',
+      slug: 'suco-de-uva-integral-1l',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Vinho Tinto 750ml',
+      description: 'Vinho tinto seco de alta qualidade.',
+      price: getRandomDrinkPrice({ type: 'ALCOHOLIC', volume: 750 }),
+      image: `${env.AWS_ENDPOINT}/drinks/vinho-tinto`,
+      active: false,
+      volume: 750,
+      type: 'ALCOHOLIC',
+      slug: 'vinho-tinto-750ml',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Água com Gás 500ml',
+      description: 'Água mineral com gás.',
+      price: getRandomDrinkPrice({ type: 'WATER', volume: 500 }),
+      image: `${env.AWS_ENDPOINT}/drinks/agua-com-gas`,
+      active: true,
+      volume: 500,
+      type: 'WATER',
+      slug: 'agua-com-gas-500ml',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Refrigerante Laranja 2L',
+      description: 'Refrigerante sabor laranja.',
+      price: getRandomDrinkPrice({ type: 'SODA', volume: 2000 }),
+      image: `${env.AWS_ENDPOINT}/drinks/refrigerante-laranja`,
+      active: false,
+      volume: 2000,
+      type: 'SODA',
+      slug: 'refrigerante-laranja-2l',
+      restaurantId: restaurant.id,
+    },
+  ])
+
+console.log(chalk.yellow('✔ Created drinks'))
 
 function getRandomPizzaPrice({ size, type }: { size: 'MEDIUM' | 'LARGE' | 'FAMILY', type: 'SWEET' | 'SALTY' }) {
   const basePrice = type === 'SWEET' ? 20000 : 25000
@@ -328,6 +465,8 @@ await db.insert(pizzas)
       restaurantId: restaurant.id,
     }
   ])
+
+console.log(chalk.yellow('✔ Created pizzas'))
 
 /**
  * Create products
