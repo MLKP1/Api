@@ -2,10 +2,12 @@ import Elysia, { t } from 'elysia'
 import { db } from '@/db/connection'
 import { authLinks } from '@/db/schema'
 import { createId } from '@paralleldrive/cuid2'
-// import { resend } from '@/mail/client'
-// import { AuthenticationMagicLinkTemplate } from '@/mail/templates/authentication-magic-link'
+import { render } from '@react-email/render'
+import { gmail } from '@/mail/client'
+import { AuthenticationMagicLinkTemplate } from '@/mail/templates/authentication-magic-link'
 import { env } from '@/env'
 import { UnauthorizedError } from '../errors/unauthorized-error'
+import { UnableToSendEmailError } from '../errors/unable-to-send-email-error'
 
 export const sendAuthenticationLink = new Elysia().post(
   '/authenticate',
@@ -35,15 +37,30 @@ export const sendAuthenticationLink = new Elysia().post(
 
     console.log(authLink.toString())
 
-    // await resend.emails.send({
-    //   from: 'Pizza Shop <naoresponda@fala.dev>',
-    //   to: email,
-    //   subject: '[Pizza Shop] Link para login',
-    //   react: AuthenticationMagicLinkTemplate({
-    //     userEmail: email,
-    //     authLink: authLink.toString(),
-    //   }),
-    // })
+    /* await resend.emails.send({
+      from: 'Pizza Shop <pizza-shop@resend.dev>',
+      to: email,
+      subject: '[Pizza Shop] Link para login',
+      react: AuthenticationMagicLinkTemplate({
+        userEmail: email,
+        authLink: authLink.toString(),
+      }),
+    }) */
+ 
+    try {
+      await gmail.post({
+        subject: '[Pizza Shop] Link para login gmail',
+        to: email,
+        html: render(
+          AuthenticationMagicLinkTemplate({
+            userEmail: email,
+            authLink: authLink.toString(),
+          })
+        ),
+      })
+    } catch (err) {
+      throw new UnableToSendEmailError()
+    }
   },
   {
     body: t.Object({
