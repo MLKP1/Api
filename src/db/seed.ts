@@ -58,8 +58,8 @@ console.log(chalk.yellow('✔ Created customers'))
 const [manager] = await db
   .insert(users)
   .values({
-    name: faker.person.fullName(),
-    email: 'diego.schell.f@gmail.com',
+    name: 'Lucas',
+    email: 'pizzastars33@gmail.com',
     role: 'manager',
   })
   .returning()
@@ -72,8 +72,8 @@ console.log(chalk.yellow('✔ Created manager'))
 const [restaurant] = await db
   .insert(restaurants)
   .values({
-    name: faker.company.name(),
-    description: faker.lorem.paragraph(),
+    name: 'Pizza Paradise',
+    description: 'A melhor pizza da cidade, com ingredientes frescos e sabor incomparável.',
     managerId: manager.id,
   })
   .returning()
