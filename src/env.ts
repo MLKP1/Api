@@ -6,6 +6,8 @@ const envSchema = z.object({
   DB_URL: z.string().url().min(1),
   JWT_SECRET_KEY: z.string().min(1),
   RESEND_API_KEY: z.string().min(1),
+  GMAIL_USER: z.string().email().min(1),
+  GMAIL_PASS: z.string().min(1),
   AWS_ACCESS_KEY_ID: z.string().min(1),
   AWS_SECRET_ACCESS_KEY: z.string().min(1),
   AWS_REGION: z.string().min(1),
