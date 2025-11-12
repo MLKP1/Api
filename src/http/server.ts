@@ -8,7 +8,7 @@ import { registerRestaurant, getManagedRestaurant } from './routes/restaurants'
 import { createEvaluation, getEvaluations } from './routes/evaluations'
 import { registerCustomer, getProfile, updateProfile } from './routes/customers'
 import { createPizza, listAllPizzas, activePizza, disablePizza, editPizza, removePizza } from './routes/products/pizzas'
-import { listAllDrinks, removeDrink, editDrink } from './routes/products/drinks'
+import { listAllDrinks, removeDrink, editDrink, activeDrink, disableDrink } from './routes/products/drinks'
 
 import { updateMenu } from './routes/update-menu'
 import { authentication } from './authentication'
@@ -60,6 +60,8 @@ const drinkGroup = new Elysia()
   .use(listAllDrinks)
   .use(removeDrink)
   .use(editDrink)
+  .use(activeDrink)
+  .use(disableDrink)
 
 const app = new Elysia()
   .use(
