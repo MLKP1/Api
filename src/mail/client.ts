@@ -1,10 +1,10 @@
 import { env } from '@/env'
-import { createTransport } from 'nodemailer'
-// import { Resend } from 'resend'
+import { Resend } from 'resend'
+// import { createTransport } from 'nodemailer'
 
-// export const resend = new Resend(env.RESEND_API_KEY)
+export const resend = new Resend(env.RESEND_API_KEY)
 
-const gmailTransport = createTransport({
+/* const gmailTransport = createTransport({
   service: 'gmail',
   port: 587,
   secure: false,
@@ -32,4 +32,4 @@ export const gmail = {
       html,
     })
   },
-}
+} */
