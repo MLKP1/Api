@@ -48,6 +48,7 @@ export const sendAuthenticationLink = new Elysia().post(
     }) */
  
     try {
+      console.time('gmail')
       await gmail.post({
         subject: '[Pizza Shop] Link para login gmail',
         to: email,
@@ -59,7 +60,10 @@ export const sendAuthenticationLink = new Elysia().post(
         ),
       })
     } catch (err) {
+      console.error(`err ---\n${err}`)
       throw new UnableToSendEmailError()
+    } finally {
+      console.timeEnd('gmail')
     }
   },
   {
