@@ -1,14 +1,14 @@
 # version: '3.7'
-
 services:
   postgres:
     image: bitnami/postgresql:latest
+    container_name: tcc-api
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=pizzashop
+      - POSTGRES_USER=tcc
+      - POSTGRES_PASSWORD=tcc
+      - POSTGRES_DB=tcc-api
     volumes:
       - postgres_data:/bitnami/postgresql
 
