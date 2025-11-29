@@ -36,7 +36,7 @@ export const getOrderDetails = new Elysia().use(authentication).get(
             quantity: true,
           },
           with: {
-            product: {
+            pizza: {
               columns: {
                 name: true,
               },

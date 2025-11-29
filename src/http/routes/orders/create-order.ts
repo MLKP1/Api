@@ -13,7 +13,7 @@ export const createOrder = new Elysia().use(authentication).post(
 
     const productsIds = items.map((item) => item.productId)
 
-    const products = await db.query.products.findMany({
+    const pizzas = await db.query.pizzas.findMany({
       where(fields, { eq, and, inArray }) {
         return and(
           eq(fields.restaurantId, restaurantId),
@@ -23,7 +23,7 @@ export const createOrder = new Elysia().use(authentication).post(
     })
 
     const orderProducts = items.map((item) => {
-      const product = products.find((product) => product.id === item.productId)
+      const product = pizzas.find((product) => product.id === item.productId)
 
       if (!product) {
         throw new Error('Not all products are available in this restaurant.')
@@ -31,9 +31,9 @@ export const createOrder = new Elysia().use(authentication).post(
 
       return {
         productId: item.productId,
-        unitPriceInCents: product.priceInCents,
+        unitPriceInCents: product.price,
         quantity: item.quantity,
-        subtotalInCents: item.quantity * product.priceInCents,
+        subtotalInCents: item.quantity * product.price,
       }
     })
 
@@ -57,7 +57,7 @@ export const createOrder = new Elysia().use(authentication).post(
         orderProducts.map((orderProduct) => {
           return {
             orderId: order.id,
-            productId: orderProduct.productId,
+            itemId: orderProduct.productId,
             priceInCents: orderProduct.unitPriceInCents,
             quantity: orderProduct.quantity,
           }
