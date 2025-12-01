@@ -243,7 +243,7 @@ function getRandomPizzaImage() {
 /**
  * Create pizzas
 */
-await db.insert(pizzas)
+const availablePizzas = await db.insert(pizzas)
   .values([
     {
       name: 'Margherita',
@@ -467,13 +467,14 @@ await db.insert(pizzas)
       restaurantId: restaurant.id,
     }
   ])
+  .returning()
 
 console.log(chalk.yellow('✔ Created pizzas'))
 
 /**
  * Create products
  */
-const availableProducts = await db
+await db
   .insert(products)
   .values([
     {
@@ -585,7 +586,6 @@ const availableProducts = await db
       description: faker.commerce.productDescription(),
     },
   ])
-  .returning()
 
 console.log(chalk.yellow('✔ Created products'))
 
@@ -595,25 +595,25 @@ const orderItemsToPush: (typeof orderItems.$inferInsert)[] = []
 for (let i = 0; i < 200; i++) {
   const orderId = createId()
 
-  const orderProducts = faker.helpers.arrayElements(availableProducts, {
+  const orderPizzas = faker.helpers.arrayElements(availablePizzas, {
     min: 1,
     max: 3,
   })
 
   let totalInCents = 0
 
-  orderProducts.forEach((orderProduct) => {
+  orderPizzas.forEach((orderPizza) => {
     const quantity = faker.number.int({
       min: 1,
       max: 3,
     })
 
-    totalInCents += orderProduct.priceInCents * quantity
+    totalInCents += orderPizza.price * quantity
 
     orderItemsToPush.push({
       orderId,
-      productId: orderProduct.id,
-      priceInCents: orderProduct.priceInCents,
+      itemId: orderPizza.id,
+      priceInCents: orderPizza.price,
       quantity,
     })
   })
