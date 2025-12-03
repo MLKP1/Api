@@ -216,217 +216,121 @@ await db.insert(drinks)
 
 console.log(chalk.yellow('✔ Created drinks'))
 
-function getRandomPizzaPrice({ size, type }: { size: 'MEDIUM' | 'LARGE' | 'FAMILY', type: 'SWEET' | 'SALTY' }) {
-  const basePrice = type === 'SWEET' ? 20000 : 25000
-
-  switch (size) {
-    case 'MEDIUM':
-      return basePrice
-    case 'LARGE':
-      return basePrice + 5000
-    case 'FAMILY':
-      return basePrice + 10000
-    default:
-      return basePrice
-  }
-}
-
-function getRandomPizzaImage() {
-  const imageKey = 'pexels-pizza-default-'
-  const numberIndex = faker.number.int({ min: 1, max: 6 })
-  const imageSelected = imageKey + numberIndex
-  const imagePath = `https://tcc-api-4279.s3.sa-east-1.amazonaws.com/pizzas/${imageSelected}`
-
-  return imagePath
-}
-
 /**
  * Create pizzas
 */
+const imagePath = 'https://tcc-api-4279.s3.sa-east-1.amazonaws.com'
+const minPrice = 5000
+const maxPrice = 9000
 const availablePizzas = await db.insert(pizzas)
   .values([
     {
-      name: 'Margherita',
-      description: 'Molho de tomate, mussarela e manjericão fresco.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
+      name: 'The Rock',
+      description: 'the pedra the gostoso main',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/4-queijo`,
+      active: false,
+      size: 'FAMILY',
+      type: 'SWEET',
+      slug: 'the-rock',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Pistache',
+      description: 'Coberta com creme de pistache.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/pistache`,
       active: true,
       size: 'MEDIUM',
-      type: 'SALTY',
-      slug: 'margherita',
+      type: 'SWEET',
+      slug: 'pistache',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Pepperoni',
-      description: 'Molho de tomate, mussarela e pepperoni.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'pepperoni',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Quatro Queijos',
+      name: 'Ovomaltine',
       description:
-        'Molho de tomate, mussarela, gorgonzola, parmesão e catupiry.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: false,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'quatro-queijos',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Calabresa',
-      description: 'Molho de tomate, mussarela e calabresa fatiada.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: false,
-      size: 'MEDIUM',
-      type: 'SALTY',
-      slug: 'calabresa',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Chocolate com Morango',
-      description: 'Chocolate ao leite, morangos frescos e leite condensado.',
-      price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'FAMILY',
-      type: 'SWEET',
-      slug: 'chocolate-com-morango',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Banana com Canela',
-      description: 'Banana fatiada, canela e açúcar.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
+        'Recheada com creme de baunilha e creme de ovomaltine crocante.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/ovomaltine`,
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
-      slug: 'banana-com-canela',
+      slug: 'ovomaltine',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Frango com Catupiry',
-      description: 'Molho de tomate, frango desfiado, catupiry e milho.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'MEDIUM',
-      type: 'SALTY',
-      slug: 'frango-com-catupiry',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Portuguesa',
-      description: 'Molho de tomate, mussarela, presunto, ovo, cebola e azeitonas.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'portuguesa',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Veggie',
-      description: 'Molho de tomate, abobrinha, berinjela, pimentão e champignon.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'MEDIUM',
-      type: 'SALTY',
-      slug: 'veggie',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Bacon Supreme',
-      description: 'Molho de tomate, mussarela, bacon crocante e cebola caramelizada.',
-      price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'FAMILY',
-      type: 'SALTY',
-      slug: 'bacon-supreme',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Mexicana',
-      description: 'Molho de tomate, carne moída temperada, pimenta jalapeño e nachos.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'mexicana',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Atum',
-      description: 'Molho de tomate, atum, cebola roxa e azeitonas.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: false,
-      size: 'MEDIUM',
-      type: 'SALTY',
-      slug: 'atum',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Rúcula com Tomate Seco',
-      description: 'Molho de tomate, mussarela, rúcula fresca e tomate seco.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: true,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'rucula-com-tomate-seco',
-      restaurantId: restaurant.id,
-    },
-    {
-      name: 'Nutella com Morango',
-      description: 'Nutella, morangos frescos e chocolate granulado.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
+      name: 'Nutella',
+      description: 'Pizza recheada de Nutella.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/nutella`,
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
-      slug: 'nutella-com-morango',
+      slug: 'nutella',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Romeu e Julieta',
-      description: 'Goiabada cremosa e queijo minas.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
+      name: 'M&Ms',
+      description: 'Recheada com creme de baunilha, brigadeiro de chocolate e M&Ms.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/m&ms`,
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
-      slug: 'romeu-e-julieta',
+      slug: 'm&ms',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Camarão',
-      description: 'Molho de tomate, mussarela, camarão e cream cheese.',
-      price: getRandomPizzaPrice({ size: 'LARGE', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
+      name: 'Churros',
+      description: 'Doce de leite, coberta de açúcar e canela.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/churros`,
       active: true,
-      size: 'LARGE',
-      type: 'SALTY',
-      slug: 'camarao',
+      size: 'MEDIUM',
+      type: 'SWEET',
+      slug: 'churros',
       restaurantId: restaurant.id,
     },
     {
       name: 'Brigadeiro',
-      description: 'Chocolate cremoso e granulado.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
+      description: 'Brigadeiro com creme de baunilha ,brigadeiro de chocolate e granulado.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/brigadeiro`,
       active: true,
       size: 'MEDIUM',
       type: 'SWEET',
@@ -434,38 +338,165 @@ const availablePizzas = await db.insert(pizzas)
       restaurantId: restaurant.id,
     },
     {
-      name: 'Parma',
-      description: 'Molho de tomate, mussarela, presunto de parma e rúcula.',
-      price: getRandomPizzaPrice({ size: 'FAMILY', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
+      name: 'Pepperoni',
+      description: 'Queijo, oregano e pepperoni.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/pepperoni`,
       active: true,
-      size: 'FAMILY',
+      size: 'MEDIUM',
       type: 'SALTY',
-      slug: 'parma',
+      slug: 'pepperoni',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Alho e Óleo',
-      description: 'Molho de tomate, mussarela, alho frito e azeite de oliva.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SALTY' }),
-      image: getRandomPizzaImage(),
-      active: false,
+      name: 'La Bianca',
+      description: 'Queijo, muçarela de vaca e búfala, requeijão, parmesão ralado, orégano e manjericão.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/la-bianca`,
+      active: true,
       size: 'MEDIUM',
       type: 'SALTY',
-      slug: 'alho-e-oleo',
+      slug: 'la-bianca',
       restaurantId: restaurant.id,
     },
     {
-      name: 'Doce de Leite',
-      description: 'Doce de leite cremoso, banana e canela.',
-      price: getRandomPizzaPrice({ size: 'MEDIUM', type: 'SWEET' }),
-      image: getRandomPizzaImage(),
+      name: 'Calabresa',
+      description: 'Queijo, calabresa e cebola, oregano.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/calabresa`,
       active: true,
       size: 'MEDIUM',
-      type: 'SWEET',
-      slug: 'doce-de-leite',
+      type: 'SALTY',
+      slug: 'calabresa',
       restaurantId: restaurant.id,
-    }
+    },
+    {
+      name: '4 Queijos',
+      description: 'Queijo, requeijão, gorgonzola, oregano e parmesão ralado.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/4-queijos`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: '4-queijos',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Carne Seca com Cream Cheese',
+      description: 'Carne Seca com Cream Cheese',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/carne-seca-com-cream-cheese`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'carne-seca-com-cream-cheese',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Cheddar & Bacon',
+      description: 'Queijo, molho sabor queijo cheddar, bacon e orégano.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/cheddar-&-bacon`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'cheddar-&-bacon',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Veggie',
+      description: 'Queijo, champignon, azeitona preta, cebola, oregano e pimentão verde.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/veggie`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'veggie',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Portuguesa',
+      description: 'Queijo, presunto, ovo de codorna, azeitona preta, cebola, oregano e pimentão verde.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/portuguesa`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'portuguesa',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Frango Caipira',
+      description: 'Queijo, frango desfiado, milho, catupiry e orégano.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/frango-caipira`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'frango-caipira',
+      restaurantId: restaurant.id,
+    },
+    {
+      name: 'Margherita',
+      description: 'Queijo, tomate, oregano e manjericão.',
+      price: Number(
+        faker.commerce.price({
+          min: minPrice,
+          max: maxPrice,
+          dec: 0,
+      })),
+      image: `${imagePath}/margherita`,
+      active: true,
+      size: 'MEDIUM',
+      type: 'SALTY',
+      slug: 'margherita',
+      restaurantId: restaurant.id,
+    },
   ])
   .returning()
 
